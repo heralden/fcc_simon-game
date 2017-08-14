@@ -1,0 +1,95 @@
+.Menu {
+  background-color: slategray;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 7em;
+  height: 7em;
+  font-family: 'Monoton', cursive;
+  font-size: 3em;
+  color: oldlace;
+  border: 0.1em solid oldlace;
+  border-radius: 0.4em;
+  padding: 0.2em 0.2em;
+  box-shadow: inset 0 0 1em hsl(60, 10%, 30%);
+  text-transform: uppercase;
+
+}
+
+.Display {
+  background-color: dimgray;
+  color: hsl(207, 90%, 54%);
+  border-radius: 0.4em;
+  padding: 0.2em;
+  margin: 0 auto;
+  width: 2em;
+  box-shadow: inset 0 0 1em hsl(60, 10%, 30%);
+}
+
+.Button {
+  font-family: inherit;
+  font-size: 1em;
+  bottom: 100%;
+  background-color: transparent;
+  border: 0;
+  color: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.Button:focus {
+  outline: 0;
+}
+
+.Button.active {
+  color: hsl(207, 90%, 65%);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em;
+  margin-top: 0.2em;
+  margin-left: 0.5em;
+  transform: translate(-50%);
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 1em;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 0.4em;
+  width: 0.4em;
+  left: 0.1em;
+  bottom: 0.1em;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: hsl(207, 90%, 54%);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 0.1em hsl(207, 90%, 54%)#2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateY(-0.6em);
+}
