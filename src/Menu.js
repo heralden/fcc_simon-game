@@ -5,14 +5,14 @@ const Menu = props => (
   <div className="Menu">
     <Button name="start" 
       value={props.start} 
-      onClick={props.handleClick} />
+      onClick={props.handleStart} />
     <Display value={props.steps} />
     <SwitchGroup amount={2}
       onChange={props.handleSwitch} 
       switches={props.switches} />
     <Button name="strict" 
       value={props.strict} 
-      onClick={props.handleClick} />
+      onClick={props.handleStrict} />
   </div>
 );
 
@@ -26,7 +26,7 @@ const Display = ({ value }) => (
 
 const Button = ({ name, value, onClick }) => (
   <button className={value ? "Button active" : "Button"}
-    onClick={onClick(name)}>
+    onClick={onClick}>
     {name}
   </button>
 );

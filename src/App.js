@@ -13,7 +13,8 @@ class App extends Component {
       steps: 0,
       switches: [ false, false ],
       start: false,
-      strict: false
+      strict: false,
+      sequence: []
     };
   }
 
@@ -30,11 +31,15 @@ class App extends Component {
       }));
     }
   }
-  handleClick = name => () => {
-    if ((name === "strict" && !this.state.start)
-      || name === "start") {
+  handleStart = () => {
+    this.setState(prevState => ({
+      start: prevState.start ? false : true
+    }));
+  }
+  handleStrict = () => {
+    if (!this.state.start) {
       this.setState(prevState => ({
-        [name]: prevState[name] ? false : true
+        strict: prevState.strict ? false : true
       }));
     }
   }
@@ -48,7 +53,8 @@ class App extends Component {
           switches={this.state.switches}
           start={this.state.start}
           strict={this.state.strict}
-          handleClick={this.handleClick}
+          handleStart={this.handleStart}
+          handleStrict={this.handleStrict}
         />
         <Game 
           buttonCount={this.state.buttonCount}
