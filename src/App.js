@@ -52,13 +52,7 @@ class App extends Component {
           input: true
         });
       } else {
-        this.setState({
-          activeButton: item.value
-        }, () => {
-          this.idleTimeout = setTimeout(() => {
-            this.setState({ activeButton: null });
-          }, PUSH_TIME);
-        });
+        this.buttonPush(item.value);
       }
     }, PUSH_TIME + IDLE_TIME);
   }
@@ -76,14 +70,15 @@ class App extends Component {
       }
     } else {
       if (this.state.strict) {
-        //this.gameLost();
-        this.resetGame();
+        this.gameLost(this.resetGame);
       } else {
-        //this.gameLost();
-        this.setState({
-          input: false,
-          inputStep: 0
-        }, this.playSequence);
+        this.gameLost(() => {
+          this.setState({
+            activeButton: null,
+            input: false,
+            inputStep: 0
+          }, this.playSequence);
+        });
       }
     }
   }
@@ -106,11 +101,22 @@ class App extends Component {
   gameWon = () => {
     // flash buttons sequentially, 5 times
   }
+
   gameLost = cb => {
-    this.setState({ activeButton: 'all' }, () => {
-      this.lossAnimation = setTimeout(() => {
-        this.setState({ activeButton: null }, cb);
-      }, 1000);
+    this.lossAnimation = setTimeout(
+      () => this.buttonPush('all', cb),
+      PUSH_TIME + IDLE_TIME
+    );
+  }
+
+  buttonPush = (btn, cb) => {
+    this.setState({ activeButton: btn }, () => {
+      this.idleTimeout = setTimeout(() => {
+        this.setState(
+          { activeButton: null }, 
+          () => { if (cb) cb(); }
+        );
+      }, PUSH_TIME);
     });
   }
 
