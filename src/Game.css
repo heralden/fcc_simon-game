@@ -1,5 +1,5 @@
 .flex-container {
-  background-color: tomato;
+  background: black;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
@@ -8,8 +8,5 @@
   width: 100%;
   height: 100%;
   list-style: none;
-}
-
-.flex-button {
-  background-color: green;
+  cursor: pointer;
 }
