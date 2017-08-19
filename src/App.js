@@ -38,23 +38,17 @@ class App extends Component {
   }
 
   playSequence = () => {
-    let gen = (function* (arr) {
-      for (let item of arr)
-        yield item;
-    })(this.state.sequence);
-
-    this.seqInterval = setInterval(() => {
-      let item = gen.next();
-      if (item.done) {
-        clearInterval(this.seqInterval);
+    this.sequencer(
+      this.state.sequence,
+      PUSH_TIME + IDLE_TIME,
+      PUSH_TIME,
+      () => {
         this.setState({
           activeButton: null,
           input: true
         });
-      } else {
-        this.buttonPush(item.value);
       }
-    }, PUSH_TIME + IDLE_TIME);
+    );
   }
 
   checkInput = btn => {
@@ -99,24 +93,46 @@ class App extends Component {
   }
 
   gameWon = () => {
-    // flash buttons sequentially, 5 times
+    this.sequencer(
+      Array(48).fill('').map((e, i) => i % this.state.buttonCount),
+      150,
+      100,
+      this.resetGame
+    );
   }
 
   gameLost = cb => {
     this.lossAnimation = setTimeout(
-      () => this.buttonPush('all', cb),
+      () => this.buttonPush('all', PUSH_TIME, cb),
       PUSH_TIME + IDLE_TIME
     );
   }
 
-  buttonPush = (btn, cb) => {
+  sequencer = (array, interval, pushTime, cb) => {
+    let gen = (function* (arr) {
+      for (let item of arr)
+        yield item;
+    })(array);
+
+    this.seqInterval = setInterval(() => {
+      let item = gen.next();
+      if (item.done) {
+        clearInterval(this.seqInterval);
+        cb();
+      } else {
+        this.buttonPush(item.value, pushTime);
+      }
+    }, interval);
+  }
+
+  buttonPush = (btn, pushTime, cb) => {
     this.setState({ activeButton: btn }, () => {
       this.idleTimeout = setTimeout(() => {
         this.setState(
           { activeButton: null }, 
           () => { if (cb) cb(); }
         );
-      }, PUSH_TIME);
+      }, pushTime);
     });
   }
 
