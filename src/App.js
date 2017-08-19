@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Menu from './Menu';
 import Game from './Game';
+import { MAX_STEPS, PUSH_TIME, IDLE_TIME } from './static';
 import { randomButton, boolToBinary } from './actions';
-
-const MAX_STEPS = 20;
-const PUSH_TIME = 1000;
-const IDLE_TIME = 200;
 
 class App extends Component {
   constructor(props) {
@@ -79,7 +76,6 @@ class App extends Component {
 
   resetGame = () => {
     clearInterval(this.seqInterval);
-    clearInterval(this.pushInterval);
     clearTimeout(this.idleTimeout);
     clearTimeout(this.lossAnimation);
     this.setState({
@@ -139,17 +135,13 @@ class App extends Component {
   handleButton = buttonIndex => () => {
     if (this.state.input) {
       this.setState(prevState => ({
-        activeButton: buttonIndex,
         inputStep: prevState.inputStep + 1,
         input: false
       }), () => {
-        this.pushInterval = setTimeout(
-          () => {
-            this.setState({
-              activeButton: null
-            }, this.checkInput(buttonIndex));
-          },
-          PUSH_TIME
+        this.buttonPush(
+          buttonIndex,
+          PUSH_TIME,
+          () => this.checkInput(buttonIndex)
         );
       });
     }

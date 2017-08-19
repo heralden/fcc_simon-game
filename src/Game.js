@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './Game.css';
+import { PUSH_TIME } from './static';
+import { playSound } from './actions';
 
-const Game = props => (
-  <ul className="flex-container">
-    {Array(props.buttonCount).fill('').map((e, i) => 
-      <Button 
-        active={props.activeButton === i ||
-          props.activeButton === 'all'}
-        count={props.buttonCount} 
-        hue={(360 / props.buttonCount) * i} 
-        onClick={props.handleButton(i)}
-        key={i} 
-      />
-    )}
-  </ul>
-);
+class Game extends Component {
+  componentWillReceiveProps(nextProps) {
+    let active = nextProps.activeButton;
+    if (active === 'all') {
+      playSound('square', 200, PUSH_TIME);
+    } else if (active !== null) {
+      let freq = 200 + (100 * active);
+      playSound('triangle', freq, PUSH_TIME);
+    }
+  }
+
+  render() { 
+    return (
+      <ul className="flex-container">
+        {Array(this.props.buttonCount).fill('').map((e, i) => (
+          <Button 
+            active={this.props.activeButton === i ||
+                this.props.activeButton === 'all'}
+            count={this.props.buttonCount} 
+            hue={(360 / this.props.buttonCount) * i} 
+            onClick={this.props.handleButton(i)}
+            key={i} 
+          />
+        ))}
+      </ul>
+    );
+  }
+}
 
 export default Game;
 
