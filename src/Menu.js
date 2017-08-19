@@ -20,7 +20,9 @@ export default Menu;
 
 const Display = ({ value }) => (
   <div className="Display">
-    <span className="Display-value">{value < 10 && '0' + value}</span>
+    <span className="Display-value">
+      {value < 10 ? '0' + value : value }
+    </span>
   </div>
 );
 
